@@ -33,21 +33,22 @@ This project re-architects a legacy on-premise infrastructure setup to AWS using
 
 🗺️ Architecture Overview
 
-[ Users ]
-↓
+[ Users ] 
+    ↓
 [ GoDaddy Domain (DNS) ]
-↓
+    ↓
 [ Route 53 (Private DNS) + ACM (SSL) ]
-↓
+    ↓
 [ Application Load Balancer (ALB) – HTTPS ]
-↓
+    ↓
 [ Auto Scaling Group – Tomcat EC2 Instances (Ubuntu AMI from Image) ]
-↓
+    ↓
 [ S3 – App Artifact Repository ]
-↓
+    ↓
 [ Private DNS: *.vprofile.internal ]
-↓
+    ↓
 [ Backend Services – EC2 Instances (Amazon Linux 2023):
-- MySQL (3306)
-- RabbitMQ (5672)
-- Memcached (11211) ]
+      - MySQL (3306)
+      - RabbitMQ (5672)
+      - Memcached (11211) ]
+
