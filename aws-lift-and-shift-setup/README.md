@@ -51,4 +51,21 @@ Users
 [Amazon S3 for Artifact & File Storage]
   ↓
 [Route 53 Private Hosted Zone]
+```
+
+⚙️ Step-by-Step Deployment
+
+🔐 Step 1: Create Security Groups via AWS Console
+
+1️⃣ Create sg-elb – For Application Load Balancer (ALB)
+1. Go to EC2 Dashboard → Network & Security → Security Groups
+2. Click Create security group
+3. Set:
+    - Name: sg-elb
+    - Description: Security group for ELB
+    - VPC: Select your default or custom VPC
+4. Under Inbound rules, add:
+    - HTTP (port 80) — Source: Anywhere (0.0.0.0/0)
+    - HTTPS (port 443) — Source: Anywhere (0.0.0.0/0)
+5. Click Create security group
 
