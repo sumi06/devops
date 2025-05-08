@@ -12,6 +12,7 @@ This project implements a Continuous Integration (CI) pipeline using Jenkins dep
 → Code Analysis (SonarQube)
 → Quality Gate Check (SonarQube)
 → Artifact Upload (Nexus)
+→ Slack notification
 
 ## 🛠️ Prerequisites
 
