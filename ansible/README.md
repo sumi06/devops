@@ -4,6 +4,7 @@ This repository contains Ansible playbooks and related configuration files for p
 
 ## 📦 Project Structure
 
+```css
 .
 ├── inventory/
 │ └── hosts # Inventory file (static or dynamic)
@@ -25,6 +26,7 @@ This repository contains Ansible playbooks and related configuration files for p
 │ └── main.yml # Role-specific variables
 ├── ansible.cfg # Ansible configuration file
 └── README.md # This file
+```
 
 ## ✅ Requirements
 
