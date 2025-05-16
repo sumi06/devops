@@ -159,10 +159,12 @@ sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
 
 ### vpc-terraform/
 
+```css
 ├── main.tf
 ├── variables.tf
 ├── outputs.tf
 ├── provider.tf
+```
 
 ### 🔧 provider.tf
 
