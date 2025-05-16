@@ -4,6 +4,7 @@ This project uses [Terraform](https://www.terraform.io/) to provision and manage
 
 ## 📁 Project Structure
 
+```css
 terraform/
 ├── backend.tf
 ├── instance.tf
@@ -13,6 +14,7 @@ terraform/
 ├── securitygrp.tf
 ├── vars.tf
 └── README.md
+```
 
 ## 🚀 Prerequisites
 
