@@ -135,21 +135,66 @@ You will launch 4 EC2 instances, each with the appropriate base OS and user data
 - Security Group: sg-backend
 - User Data:
 
-```#!/bin/bash DATABASE_PASS='admin123' sudo dnf update -y sudo dnf install git zip unzip -y sudo dnf install mariadb105-server -y sudo systemctl start mariadb sudo systemctl enable mariadb cd /tmp/ sudo mysqladmin -u root password "$DATABASE_PASS" sudo mysql -u root -p"$DATABASE_PASS" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$DATABASE_PASS'" sudo mysql -u root -p"$DATABASE_PASS" -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')" sudo mysql -u root -p"$DATABASE_PASS" -e "DELETE FROM mysql.user WHERE User=''" sudo mysql -u root -p"$DATABASE_PASS" -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%'" sudo mysql -u root -p"$DATABASE_PASS" -e "FLUSH PRIVILEGES" sudo mysql -u root -p"$DATABASE_PASS" -e "create database accounts" sudo mysql -u root -p"$DATABASE_PASS" -e "grant all privileges on accounts.* TO 'admin'@'localhost' identified by 'admin123'" sudo mysql -u root -p"$DATABASE_PASS" -e "grant all privileges on accounts.\* TO 'admin'@'%' identified by 'admin123'" sudo mysql -u root -p"$DATABASE_PASS" accounts < /tmp/vprofile-project/src/main/resources/db_backup.sql sudo mysql -u root -p"$DATABASE_PASS" -e "FLUSH PRIVILEGES"```
+```bash
+#!/bin/bash
+DATABASE_PASS='admin123'
+sudo dnf update -y
+sudo dnf install git zip unzip -y
+sudo dnf install mariadb105-server -y
+sudo systemctl start mariadb
+sudo systemctl enable mariadb
+cd /tmp/
+sudo mysqladmin -u root password "$DATABASE_PASS"
+sudo mysql -u root -p"$DATABASE_PASS" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$DATABASE_PASS'"
+sudo mysql -u root -p"$DATABASE_PASS" -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')"
+sudo mysql -u root -p"$DATABASE_PASS" -e "DELETE FROM mysql.user WHERE User=''"
+sudo mysql -u root -p"$DATABASE_PASS" -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%'"
+sudo mysql -u root -p"$DATABASE_PASS" -e "FLUSH PRIVILEGES"
+sudo mysql -u root -p"$DATABASE_PASS" -e "create database accounts"
+sudo mysql -u root -p"$DATABASE_PASS" -e "grant all privileges on accounts.* TO 'admin'@'localhost' identified by 'admin123'"
+sudo mysql -u root -p"$DATABASE_PASS" -e "grant all privileges on accounts.\* TO 'admin'@'%' identified by 'admin123'"
+sudo mysql -u root -p"$DATABASE_PASS" accounts < /tmp/vprofile-project/src/main/resources/db_backup.sql
+sudo mysql -u root -p"$DATABASE_PASS" -e "FLUSH PRIVILEGES"
+```
 
 3️⃣ Memcached (Amazon Linux 2023)
 - AMI: Amazon Linux 2023 AMI
 - Security Group: sg-backend
 - User Data:
 
-```#!/bin/bash sudo dnf install memcached -y sudo systemctl start memcached sudo systemctl enable memcached sudo systemctl status memcached sed -i 's/127.0.0.1/0.0.0.0/g' /etc/sysconfig/memcached sudo systemctl restart memcached sudo memcached -p 11211 -U 11111 -u memcached -d```
+```bash
+#!/bin/bash
+sudo dnf install memcached -y
+sudo systemctl start memcached
+sudo systemctl enable memcached
+sudo systemctl status memcached
+sed -i 's/127.0.0.1/0.0.0.0/g' /etc/sysconfig/memcached
+sudo systemctl restart memcached
+sudo memcached -p 11211 -U 11111 -u memcached -d
+```
 
 4️⃣ RabbitMQ (Amazon Linux 2023)
 - AMI: Amazon Linux 2023 AMI
 - Security Group: sg-backend
 - User Data:
 
-```#!/bin/bash rpm --import 'https://github.com/rabbitmq/signing-keys/releases/download/3.0/rabbitmq-release-signing-key.asc' rpm --import 'https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-erlang.E495BB49CC4BBE5B.key' rpm --import 'https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-server.9F4587F226208342.key' curl -o /etc/yum.repos.d/rabbitmq.repo https://raw.githubusercontent.com/hkhcoder/vprofile-project/refs/heads/awsliftandshift/al2023rmq.repo dnf update -y dnf install socat logrotate -y dnf install -y erlang rabbitmq-server systemctl enable rabbitmq-server systemctl start rabbitmq-server sudo sh -c 'echo "[{rabbit, [{loopback*users, []}]}]." > /etc/rabbitmq/rabbitmq.config' sudo rabbitmqctl add_user test test sudo rabbitmqctl set_user_tags test administrator rabbitmqctl set_permissions -p / test ".*" ".\_" ".\*" sudo systemctl restart rabbitmq-server```
+```bash
+#!/bin/bash
+rpm --import 'https://github.com/rabbitmq/signing-keys/releases/download/3.0/rabbitmq-release-signing-key.asc'
+rpm --import 'https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-erlang.E495BB49CC4BBE5B.key'
+rpm --import 'https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-server.9F4587F226208342.key'
+curl -o /etc/yum.repos.d/rabbitmq.repo https://raw.githubusercontent.com/hkhcoder/vprofile-project/refs/heads/awsliftandshift/al2023rmq.repo
+dnf update -y
+dnf install socat logrotate -y
+dnf install -y
+erlang rabbitmq-server
+systemctl enable rabbitmq-server
+systemctl start rabbitmq-server
+sudo sh -c 'echo "[{rabbit, [{loopback*users, []}]}]." > /etc/rabbitmq/rabbitmq.config'
+sudo rabbitmqctl add_user test test
+sudo rabbitmqctl set_user_tags test administrator rabbitmqctl set_permissions -p / test ".*" ".\_" ".\*"
+sudo systemctl restart rabbitmq-server
+```
 
 ### 🌐 Step 3: Create Private DNS Records in Route 53
 To allow your Tomcat app to resolve backend services like MySQL, Memcached, RabbitMQ by name instead of private IP, create a Route 53 Private Hosted Zone and add A records for each backend service.
