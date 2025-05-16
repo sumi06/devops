@@ -142,10 +142,12 @@ fab system_info
 
 ## 📁 Directory Structure Example
 
+```css
 .
 ├── fabfile.py
 ├── website.zip # downloaded from URL
 └── unzipped_folder/ # extracted folder (used in DIRNAME)
+```
 
 ## ✅ Summary
 
