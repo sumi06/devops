@@ -2,6 +2,7 @@
 
 ## 🏗️ Architecture Overview
 
+```pgsql
           [ Internet / Browser ]
                   |
                   v
@@ -42,6 +43,7 @@
 | Secret: db-pass (b64)   |
 | Used by: vprodb         |
 +-------------------------+
+```
 
 ## 🔧 Cluster Setup — Using Kops on AWS
 
